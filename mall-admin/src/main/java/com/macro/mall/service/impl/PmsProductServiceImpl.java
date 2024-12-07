@@ -1,6 +1,7 @@
 package com.macro.mall.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.dao.*;
 import com.macro.mall.dto.PmsProductParam;
@@ -9,6 +10,7 @@ import com.macro.mall.dto.PmsProductResult;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
 import com.macro.mall.service.PmsProductService;
+import com.macro.mall.service.SysRegionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +66,20 @@ public class PmsProductServiceImpl implements PmsProductService {
     private PmsProductDao productDao;
     @Autowired
     private PmsProductVertifyRecordDao productVertifyRecordDao;
+    @Autowired
+    private SysRegionService regionService;
 
     @Override
     public int create(PmsProductParam productParam) {
         int count;
+        // 如果提供了区域编码，则验证其有效性
+        if (StrUtil.isNotEmpty(productParam.getRegionCode())) {
+            List<SysRegion> regions = regionService.getRegionByCode(productParam.getRegionCode());
+            if (CollUtil.isEmpty(regions)) {
+                LOGGER.error("创建商品失败:无效的区域编码 {}", productParam.getRegionCode());
+                return 0;
+            }
+        }
         //创建商品
         PmsProduct product = productParam;
         product.setId(null);
@@ -120,6 +132,14 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Override
     public int update(Long id, PmsProductParam productParam) {
         int count;
+        // 验证区域编码是否有效
+        if (StrUtil.isNotEmpty(productParam.getRegionCode())) {
+            List<SysRegion> regions = regionService.getRegionByCode(productParam.getRegionCode());
+            if (CollUtil.isEmpty(regions)) {
+                LOGGER.error("更新商品失败:无效的区域编码 {}", productParam.getRegionCode());
+                return 0;
+            }
+        }
         //更新商品信息
         PmsProduct product = productParam;
         product.setId(id);

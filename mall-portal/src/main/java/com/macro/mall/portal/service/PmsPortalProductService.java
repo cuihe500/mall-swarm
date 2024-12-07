@@ -3,6 +3,7 @@ package com.macro.mall.portal.service;
 import com.macro.mall.model.PmsProduct;
 import com.macro.mall.portal.domain.PmsPortalProductDetail;
 import com.macro.mall.portal.domain.PmsProductCategoryNode;
+import com.macro.mall.dto.PmsProductQueryParam;
 
 import java.util.List;
 
@@ -25,4 +26,9 @@ public interface PmsPortalProductService {
      * 获取前台商品详情
      */
     PmsPortalProductDetail detail(Long id);
+
+    /**
+     * 根据商品查询参数获取商品列表
+     */
+    List<PmsProduct> list(PmsProductQueryParam queryParam, Integer pageSize, Integer pageNum);
 }

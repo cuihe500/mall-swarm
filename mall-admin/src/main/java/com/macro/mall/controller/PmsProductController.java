@@ -9,6 +9,8 @@ import com.macro.mall.model.PmsProduct;
 import com.macro.mall.service.PmsProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,7 @@ public class PmsProductController {
         if (count > 0) {
             return CommonResult.success(count);
         } else {
-            return CommonResult.failed();
+            return CommonResult.failed("创建商品失败,请检查区域编码是否有效");
         }
     }
 
@@ -55,11 +57,14 @@ public class PmsProductController {
         if (count > 0) {
             return CommonResult.success(count);
         } else {
-            return CommonResult.failed();
+            return CommonResult.failed("更新商品失败,请检查区域编码是否有效");
         }
     }
 
-    @Operation(summary = "查询商品")
+    @Operation(summary = "查询商品", description = "根据查询条件分页获取商品列表")
+    @Parameter(name = "productQueryParam", description = "包含:关键字、商品货号、商品分类、商品品牌、上架状态、审核状态、区域编码等")
+    @Parameter(name = "pageSize", description = "每页记录数")
+    @Parameter(name = "pageNum", description = "页码")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<PmsProduct>> getList(PmsProductQueryParam productQueryParam,

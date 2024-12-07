@@ -40,6 +40,7 @@
     <result column="promotion_type" jdbcType="INTEGER" property="promotionType" />
     <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
     <result column="product_category_name" jdbcType="VARCHAR" property="productCategoryName" />
+    <result column="region_code" jdbcType="VARCHAR" property="regionCode" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.macro.mall.model.PmsProduct">
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
@@ -111,7 +112,7 @@
     verify_status, sort, sale, price, promotion_price, gift_growth, gift_point, use_point_limit, 
     sub_title, original_price, stock, low_stock, unit, weight, preview_status, service_ids, 
     keywords, note, album_pics, detail_title, promotion_start_time, promotion_end_time, 
-    promotion_per_limit, promotion_type, brand_name, product_category_name
+    promotion_per_limit, promotion_type, brand_name, product_category_name, region_code
   </sql>
   <sql id="Blob_Column_List">
     description, detail_desc, detail_html, detail_mobile_html
@@ -900,4 +901,24 @@
       product_category_name = #{productCategoryName,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <select id="selectByQueryParam" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from pms_product
+    <where>
+        <if test="queryParam.regionCode != null">
+            <choose>
+                <when test="queryParam.includeSubRegion == 1">
+                    <!-- 包含子区域,使用LIKE匹配前缀 -->
+                    AND region_code LIKE CONCAT(#{queryParam.regionCode}, '%')
+                </when>
+                <otherwise>
+                    <!-- 仅当前区域 -->
+                    AND region_code = #{queryParam.regionCode}
+                </otherwise>
+            </choose>
+        </if>
+        <!-- ... 其他查询条件 ... -->
+    </where>
+  </select>
 </mapper>

@@ -4,6 +4,7 @@ import com.macro.mall.model.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@Schema(description = "创建和修改商品时使用的参数")
 public class PmsProductParam extends PmsProduct{
     @Schema(title = "商品阶梯价格设置")
     private List<PmsProductLadder> productLadderList;
@@ -28,4 +30,6 @@ public class PmsProductParam extends PmsProduct{
     private List<CmsSubjectProductRelation> subjectProductRelationList;
     @Schema(title = "优选专区和商品的关系")
     private List<CmsPrefrenceAreaProductRelation> prefrenceAreaProductRelationList;
+    @Schema(description = "区域编码，15位数字，对应区域表的region_code，可选")
+    private String regionCode;
 }

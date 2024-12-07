@@ -2505,6 +2505,41 @@ public class PmsProductExample {
             addCriterion("product_category_name not between", value1, value2, "productCategoryName");
             return (Criteria) this;
         }
+
+        public Criteria andRegionCodeEqualTo(String value) {
+            addCriterion("region_code =", value, "regionCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionCodeLike(String value) {
+            addCriterion("region_code like", value, "regionCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionCodeNotEqualTo(String value) {
+            addCriterion("region_code <>", value, "regionCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionCodeIn(List<String> values) {
+            addCriterion("region_code in", values, "regionCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionCodeNotIn(List<String> values) {
+            addCriterion("region_code not in", values, "regionCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionCodeBetween(String value1, String value2) {
+            addCriterion("region_code between", value1, value2, "regionCode");
+            return (Criteria) this;
+        }
+
+        public Criteria andRegionCodeNotBetween(String value1, String value2) {
+            addCriterion("region_code not between", value1, value2, "regionCode");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

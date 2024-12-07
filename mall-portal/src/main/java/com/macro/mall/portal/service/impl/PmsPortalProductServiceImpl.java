@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.mapper.*;
 import com.macro.mall.model.*;
+import com.macro.mall.dto.PmsProductQueryParam;
 import com.macro.mall.portal.dao.PortalProductDao;
 import com.macro.mall.portal.domain.PmsPortalProductDetail;
 import com.macro.mall.portal.domain.PmsProductCategoryNode;
@@ -126,6 +127,39 @@ public class PmsPortalProductServiceImpl implements PmsPortalProductService {
         return result;
     }
 
+    @Override
+    public List<PmsProduct> list(PmsProductQueryParam queryParam, Integer pageSize, Integer pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        PmsProductExample example = new PmsProductExample();
+        PmsProductExample.Criteria criteria = example.createCriteria();
+        criteria.andDeleteStatusEqualTo(0);
+        if (queryParam.getRegionCode() != null) {
+            if (queryParam.getIncludeSubRegion() != null && queryParam.getIncludeSubRegion() == 1) {
+                criteria.andRegionCodeLike(queryParam.getRegionCode() + "%");
+            } else {
+                criteria.andRegionCodeEqualTo(queryParam.getRegionCode());
+            }
+        }
+        if (queryParam.getPublishStatus() != null) {
+            criteria.andPublishStatusEqualTo(queryParam.getPublishStatus());
+        }
+        if (queryParam.getVerifyStatus() != null) {
+            criteria.andVerifyStatusEqualTo(queryParam.getVerifyStatus());
+        }
+        if (queryParam.getKeyword() != null) {
+            criteria.andNameLike("%" + queryParam.getKeyword() + "%");
+        }
+        if (queryParam.getProductSn() != null) {
+            criteria.andProductSnEqualTo(queryParam.getProductSn());
+        }
+        if (queryParam.getBrandId() != null) {
+            criteria.andBrandIdEqualTo(queryParam.getBrandId());
+        }
+        if (queryParam.getProductCategoryId() != null) {
+            criteria.andProductCategoryIdEqualTo(queryParam.getProductCategoryId());
+        }
+        return productMapper.selectByExample(example);
+    }
 
     /**
      * 初始对象转化为节点对象

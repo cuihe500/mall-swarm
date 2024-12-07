@@ -120,6 +120,9 @@ public class PmsProduct implements Serializable {
     @Schema(title = "移动端网页详情")
     private String detailMobileHtml;
 
+    @Schema(description = "区域编码")
+    private String regionCode;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -458,6 +461,14 @@ public class PmsProduct implements Serializable {
         this.detailMobileHtml = detailMobileHtml;
     }
 
+    public String getRegionCode() {
+        return regionCode;
+    }
+
+    public void setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -506,6 +517,7 @@ public class PmsProduct implements Serializable {
         sb.append(", detailDesc=").append(detailDesc);
         sb.append(", detailHtml=").append(detailHtml);
         sb.append(", detailMobileHtml=").append(detailMobileHtml);
+        sb.append(", regionCode=").append(regionCode);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

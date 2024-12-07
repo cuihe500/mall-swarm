@@ -31,11 +31,12 @@ services:
     ports:
       - 80:80
   rabbitmq:
-    image: rabbitmq:3.9-management
+    image: rabbitmq:3.10.5-management
     container_name: rabbitmq
-    volumes:
-      - /mydata/rabbitmq/data:/var/lib/rabbitmq #数据文件挂载
-      - /mydata/rabbitmq/log:/var/log/rabbitmq #日志文件挂载
+    user: rabbitmq
+#    volumes:
+#      - /mydata/rabbitmq/data:/var/lib/rabbitmq #数据文件挂载
+#      - /mydata/rabbitmq/log:/var/log/rabbitmq #日志文件挂载
     ports:
       - 5672:5672
       - 15672:15672
@@ -43,6 +44,9 @@ services:
     image: elasticsearch:7.17.3
     container_name: elasticsearch
     user: root
+#    command: >
+#      /bin/sh -c "./bin/elasticsearch-plugin install https://get.infini.cloud/elasticsearch/analysis-ik/7.17.3;
+#      /usr/local/bin/docker-entrypoint.sh"
     environment:
       - "cluster.name=elasticsearch" #设置集群名称为elasticsearch
       - "discovery.type=single-node" #以单一节点模式启动
@@ -94,3 +98,7 @@ services:
       - "MODE=standalone"
     ports:
       - 8848:8848
+      # fix: nacos UNAVAILABLE: io exception
+      - 9848:9848
+      - 9849:9849
+      - 7848:7848

@@ -28,4 +28,4 @@ public class PmsProductQueryParam {
     private String regionCode;
     @Schema(description = "是否包含子区域商品，0->否；1->是")
     private Integer includeSubRegion;
-}
+} 

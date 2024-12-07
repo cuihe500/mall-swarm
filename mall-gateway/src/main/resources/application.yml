@@ -71,6 +71,7 @@ secure:
       - "/mall-admin/admin/login"
       - "/mall-admin/admin/register"
       - "/mall-admin/minio/upload"
+      - "/mall-portal/region/code"
 management:
   endpoints:
     web:
@@ -118,4 +119,9 @@ sa-token:
   token-prefix: Bearer
   # 是否打印banner
   is-print: false
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.macro.mall.gateway: DEBUG
+    sa.token: DEBUG
 
